@@ -1,0 +1,52 @@
+// Common mixins to reduce SCSS duplication
+
+@mixin button-hover-effect($transform: translateY(-1px)) {
+  transition: all 0.3s ease;
+  &:hover {
+    transform: $transform;
+  }
+}
+
+@mixin card-shadow($hover: true) {
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  @if $hover {
+    &:hover {
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin responsive-padding($mobile: 16px, $desktop: 24px) {
+  padding: $desktop;
+
+  @media (max-width: 768px) {
+    padding: $mobile;
+  }
+}
+
+// Score button mixin
+@mixin score-button($color) {
+  border-color: $color;
+
+  &:hover {
+    box-shadow: 0 4px 8px rgba($color, 0.2);
+  }
+
+  &.selected {
+    background: $color;
+    color: white;
+    box-shadow: 0 4px 12px rgba($color, 0.3);
+  }
+}

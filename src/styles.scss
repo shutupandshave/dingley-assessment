@@ -1,6 +1,10 @@
 /* You can add global styles to this file, and also import other style files */
 
-html, body {
+// Import shared mixins
+@use "app/shared/mixins" as *;
+
+html,
+body {
   height: 100%;
   margin: 0;
   font-family: Roboto, "Helvetica Neue", sans-serif;
@@ -13,7 +17,7 @@ html, body {
 
 // Additional global styles for Material components
 .mat-mdc-card {
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  @include card-shadow;
 }
 
 .mat-mdc-tab-group {

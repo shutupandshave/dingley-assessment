@@ -213,22 +213,18 @@
     align-items: flex-start;
     gap: 0.5rem;
   }
-
   .completion-summary {
     width: 100%;
     justify-content: space-between;
   }
-
   .year-overall-progress,
   .section-progress-item {
     padding: 0.5rem;
   }
-
   .progress-bar-container {
     flex-direction: column;
     align-items: flex-start;
     gap: 0.5rem;
-
     .progress-text {
       min-width: auto;
       text-align: left;
