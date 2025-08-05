@@ -1,0 +1,504 @@
+{
+  "assessment_framework": {
+    "title": "Early Years Development Assessment",
+    "scoring": {
+      "E": {
+        "label": "Emerging",
+        "value": 1,
+        "description": "Emerging (1 mark)"
+      },
+      "S": {
+        "label": "Supported",
+        "value": 2,
+        "description": "Supported (2 marks)"
+      },
+      "I": {
+        "label": "Independent",
+        "value": 3,
+        "description": "Independent (3 marks)"
+      }
+    },
+    "sections": [
+      {
+        "id": 1,
+        "title": "Communication and interaction",
+        "subsections": [
+          {
+            "id": 1,
+            "title": "Interaction",
+            "questions": [
+              {
+                "id": 1,
+                "text": "I show excitement during one-to-one turn taking games"
+              },
+              {
+                "id": 2,
+                "text": "I respond to interactions initiated by others"
+              },
+              {
+                "id": 3,
+                "text": "I seek interaction through movements or vocalisations"
+              },
+              {
+                "id": 4,
+                "text": "I demonstrate distress when left alone"
+              },
+              {
+                "id": 5,
+                "text": "I react in anticipation of familiar play or interactions"
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "title": "Expressive communication",
+            "questions": [
+              {
+                "id": 6,
+                "text": "I can use my method of communication to demonstrate a need or want"
+              },
+              {
+                "id": 7,
+                "text": "I commentate on things I see around me verbally or by using gestures or signs"
+              },
+              {
+                "id": 8,
+                "text": "I can request more during a highly motivating activity"
+              },
+              {
+                "id": 9,
+                "text": "I can communicate my choice between two options"
+              },
+              {
+                "id": 10,
+                "text": "I can combine two or three words when communicating, this may include signs or symbols"
+              },
+              {
+                "id": 11,
+                "text": "I can complete a back-and-forth interaction using my method of communication"
+              },
+              {
+                "id": 12,
+                "text": "I can make some non-speech sounds"
+              },
+              {
+                "id": 13,
+                "text": "I am learning new words or visuals or signs regularly"
+              },
+              {
+                "id": 14,
+                "text": "I can imitate the communication of others"
+              },
+              {
+                "id": 15,
+                "text": "I can attract attention to express a want or dislike"
+              },
+              {
+                "id": 16,
+                "text": "I can request support or communicate my need for help safely"
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "title": "Receptive communication",
+            "questions": [
+              {
+                "id": 17,
+                "text": "I can join in with familiar rhymes, songs or books using my method of communication"
+              },
+              {
+                "id": 18,
+                "text": "I can focus on a directed activity for up to 1 minute"
+              },
+              {
+                "id": 19,
+                "text": "I can follow a simple instruction involving my method of communication"
+              },
+              {
+                "id": 20,
+                "text": "I can follow an instruction involving two parts"
+              },
+              {
+                "id": 21,
+                "text": "I attempt to copy actions or sounds in familiar rhymes, songs or books"
+              },
+              {
+                "id": 22,
+                "text": "I can look between two objects when shown them (recognises two objects are present)"
+              },
+              {
+                "id": 23,
+                "text": "I respond to sounds made near me"
+              },
+              {
+                "id": 24,
+                "text": "I can wait for \"Go\" during ready, steady, go games"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Sensory and physical",
+        "subsections": [
+          {
+            "id": 4,
+            "title": "Mobility",
+            "questions": [
+              {
+                "id": 25,
+                "text": "I can crawl, shuffle or roll from one place to another"
+              },
+              {
+                "id": 26,
+                "text": "I can move in a variety of ways on two feet, with or without a support aid"
+              },
+              {
+                "id": 27,
+                "text": "I can move my arms or legs across my body, crossing my midline"
+              },
+              {
+                "id": 28,
+                "text": "I can move around a room by cruising or using an adult for support"
+              },
+              {
+                "id": 29,
+                "text": "I can grasp objects within my reach"
+              },
+              {
+                "id": 30,
+                "text": "I can put weight through my feet, this may be using an appropriate support aid"
+              },
+              {
+                "id": 31,
+                "text": "I can move parts of my body in response to stimuli"
+              },
+              {
+                "id": 32,
+                "text": "I can sit using an appropriate support"
+              }
+            ]
+          },
+          {
+            "id": 5,
+            "title": "Life skills",
+            "questions": [
+              {
+                "id": 33,
+                "text": "I can drink from an open top cup without support"
+              },
+              {
+                "id": 34,
+                "text": "I can navigate fastenings when dressing myself, such as zips, buttons and clips"
+              },
+              {
+                "id": 35,
+                "text": "I can feed myself with some success using hands or cutlery"
+              },
+              {
+                "id": 36,
+                "text": "I co-operate with dressing"
+              },
+              {
+                "id": 37,
+                "text": "I try new foods during mealtimes"
+              },
+              {
+                "id": 38,
+                "text": "I can sleep for periods of two hours or longer"
+              },
+              {
+                "id": 39,
+                "text": "I can open my mouth for feeding or drinking"
+              },
+              {
+                "id": 40,
+                "text": "I can brush my gums or teeth appropriately"
+              }
+            ]
+          },
+          {
+            "id": 6,
+            "title": "Sensory",
+            "questions": [
+              {
+                "id": 41,
+                "text": "I will engage with new textures with interest"
+              },
+              {
+                "id": 42,
+                "text": "I can adjust my environment to meet my sensory needs, such as switching off lights, putting on ear defenders, removing uncomfortable clothing"
+              },
+              {
+                "id": 43,
+                "text": "I repeat actions which achieve a familiar outcome"
+              },
+              {
+                "id": 44,
+                "text": "I can express discomfort towards a sensory experience"
+              },
+              {
+                "id": 45,
+                "text": "I respond positively to games involving physical touch or movement"
+              },
+              {
+                "id": 46,
+                "text": "I can respond in different ways to different sensory opportunities"
+              },
+              {
+                "id": 47,
+                "text": "I can close my fist around given objects"
+              },
+              {
+                "id": 48,
+                "text": "I am interested in exploring new experiences"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Social and emotional",
+        "subsections": [
+          {
+            "id": 7,
+            "title": "Social skills",
+            "questions": [
+              {
+                "id": 49,
+                "text": "I recognise when others are engaging with the same experience as me"
+              },
+              {
+                "id": 50,
+                "text": "I can initiate an interaction with other children"
+              },
+              {
+                "id": 51,
+                "text": "I can initiate interaction with a familiar adult"
+              },
+              {
+                "id": 52,
+                "text": "I am comfortable engaging in a group of more than 2"
+              },
+              {
+                "id": 53,
+                "text": "I look in the direction of the person or object I am interacting with (not necessarily making eye contact)"
+              },
+              {
+                "id": 54,
+                "text": "I can play alongside others or allow others in my space"
+              },
+              {
+                "id": 55,
+                "text": "I show awareness of familiar people"
+              },
+              {
+                "id": 56,
+                "text": "I can approach an activity where others are already playing"
+              }
+            ]
+          },
+          {
+            "id": 8,
+            "title": "Regulation",
+            "questions": [
+              {
+                "id": 57,
+                "text": "I can recognise strategies which support my emotional regulation"
+              },
+              {
+                "id": 58,
+                "text": "I can use strategies to wait my turn with peers"
+              },
+              {
+                "id": 59,
+                "text": "I seek comfort when emotionally dysregulated"
+              },
+              {
+                "id": 60,
+                "text": "I can recognise some consistent boundaries"
+              },
+              {
+                "id": 61,
+                "text": "I demonstrate my emotions through my behaviour and actions"
+              },
+              {
+                "id": 62,
+                "text": "I can wait my turn with a familiar adult"
+              },
+              {
+                "id": 63,
+                "text": "I react to the emotions of those around me"
+              },
+              {
+                "id": 64,
+                "text": "I can be encouraged to change activities using a now and next approach"
+              }
+            ]
+          },
+          {
+            "id": 9,
+            "title": "Awareness of self",
+            "questions": [
+              {
+                "id": 65,
+                "text": "I can play contently on my own"
+              },
+              {
+                "id": 66,
+                "text": "I can wear personalised aids and equipment that support me to access the environment"
+              },
+              {
+                "id": 67,
+                "text": "I can show preference for people or tasks"
+              },
+              {
+                "id": 68,
+                "text": "I can label some of my own emotions verbally or by using signs or visuals"
+              },
+              {
+                "id": 69,
+                "text": "I can copy the facial expressions of others"
+              },
+              {
+                "id": 70,
+                "text": "I can recognise when an adult is sharing language about emotions with me"
+              },
+              {
+                "id": 71,
+                "text": "I show enjoyment when looking in a mirror"
+              },
+              {
+                "id": 72,
+                "text": "I demonstrate a want to do things independently"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Cognition and learning",
+        "subsections": [
+          {
+            "id": 10,
+            "title": "Play skills",
+            "questions": [
+              {
+                "id": 73,
+                "text": "I can co-operate with a familiar person when playing, for example rolling a ball back and forth"
+              },
+              {
+                "id": 74,
+                "text": "I can focus on an activity of my own choosing for up to 2 minutes"
+              },
+              {
+                "id": 75,
+                "text": "I can copy the actions of others"
+              },
+              {
+                "id": 76,
+                "text": "I link ideas during play such as putting a teddy in a car and pushing it along"
+              },
+              {
+                "id": 77,
+                "text": "I explore new objects with interest"
+              },
+              {
+                "id": 78,
+                "text": "I can play with items in different ways"
+              },
+              {
+                "id": 79,
+                "text": "I recognise familiar objects and the joy they bring"
+              },
+              {
+                "id": 80,
+                "text": "I repeat actions demonstrating cause and effect"
+              }
+            ]
+          },
+          {
+            "id": 11,
+            "title": "Exploratory skills",
+            "questions": [
+              {
+                "id": 81,
+                "text": "I show awareness of routines through reaction to visual and audio stimuli"
+              },
+              {
+                "id": 82,
+                "text": "I can use a visual routine to support my understanding of the day"
+              },
+              {
+                "id": 83,
+                "text": "I can remember where preferred objects are and seek these out"
+              },
+              {
+                "id": 84,
+                "text": "I can transition to a new task using a visual or audio prompt"
+              },
+              {
+                "id": 85,
+                "text": "I can look for objects placed near or around me"
+              },
+              {
+                "id": 86,
+                "text": "I can re-enact or imitate everyday routines during play"
+              },
+              {
+                "id": 87,
+                "text": "I use my different senses to explore new objects and environments"
+              },
+              {
+                "id": 88,
+                "text": "I correctly understand the use of objects, such as putting a phone to my ear"
+              }
+            ]
+          },
+          {
+            "id": 12,
+            "title": "Problem solving",
+            "questions": [
+              {
+                "id": 89,
+                "text": "I can search for hidden objects"
+              },
+              {
+                "id": 90,
+                "text": "I can adjust my approach to achieve my desired outcome"
+              },
+              {
+                "id": 91,
+                "text": "I can balance objects on top of each other"
+              },
+              {
+                "id": 92,
+                "text": "I show awareness of counting objects during play"
+              },
+              {
+                "id": 93,
+                "text": "I try to complete tasks independently, using trial and error"
+              },
+              {
+                "id": 94,
+                "text": "I can group or organise objects in a way which is meaningful to me"
+              },
+              {
+                "id": 95,
+                "text": "I can notice change as I interact with my environment"
+              },
+              {
+                "id": 96,
+                "text": "I demonstrate pride in my accomplishments"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+}
