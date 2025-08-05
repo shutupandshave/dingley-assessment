@@ -111,135 +111,15 @@
 
                   <!-- Assessment Progress Overview -->
                   @if (hasAnyScores()) {
-                  <div class="progress-overview">
-                    <h3>Assessment Progress</h3>
-
-                    <!-- Year Comparison Summary with Accordions -->
-                    <div class="year-summary">
-                      <h4>Completion by Year</h4>
-                      <div class="year-completion-grid">
-                        @for (year of availableYears; track year) {
-                        <div
-                          class="year-completion-item"
-                          [class.current-year]="year === currentYear"
-                        >
-                          <div
-                            class="year-header"
-                            (click)="toggleYearDetails(year)"
-                          >
-                            <div class="year-title-section">
-                              <span class="year-title">{{ year }}</span>
-                              @if (year === currentYear) {
-                              <span class="current-indicator">Current</span>
-                              }
-                            </div>
-                            <div class="completion-summary">
-                              <span class="completion-text">
-                                {{ getYearCompletionCount(year) }} /
-                                {{ getTotalQuestionsCount() }} questions ({{
-                                  getYearCompletionPercentage(year)
-                                }}%)
-                              </span>
-                              <mat-icon
-                                class="expand-icon"
-                                [class.expanded]="expandedYears[year]"
-                              >
-                                expand_more
-                              </mat-icon>
-                            </div>
-                          </div>
-                          <div class="completion-stats">
-                            <div class="completion-bar">
-                              <div
-                                class="completion-fill"
-                                [style.width.%]="
-                                  getYearCompletionPercentage(year)
-                                "
-                                [class.current-year-fill]="year === currentYear"
-                              ></div>
-                            </div>
-                          </div>
-
-                          <!-- Expandable Year Details -->
-                          @if (expandedYears[year]) {
-                          <div class="year-details">
-                            <!-- Overall Progress for this year -->
-                            <div class="year-overall-progress">
-                              <div class="progress-header">
-                                <span>Overall Completion - {{ year }}</span>
-                                <span class="progress-percentage"
-                                  >{{
-                                    getYearTotalScore(year).percentage
-                                  }}%</span
-                                >
-                              </div>
-                              <div class="progress-bar-container">
-                                <div class="progress-bar">
-                                  <div
-                                    class="progress-fill overall"
-                                    [style.width.%]="
-                                      getYearTotalScore(year).percentage
-                                    "
-                                  ></div>
-                                </div>
-                                <span class="progress-text">
-                                  {{ getYearTotalScore(year).current }} /
-                                  {{ getYearTotalScore(year).total }} questions
-                                </span>
-                              </div>
-                            </div>
-
-                            <!-- Section Progress for this year -->
-                            <div class="year-sections-progress">
-                              @for (section of
-                              assessmentData.assessment_framework.sections;
-                              track section.title) {
-                              <div class="section-progress-item">
-                                <div class="progress-header">
-                                  <span>{{ section.title }}</span>
-                                  <span class="progress-percentage"
-                                    >{{
-                                      getYearSectionScore(year, section.title)
-                                        .percentage
-                                    }}%</span
-                                  >
-                                </div>
-                                <div class="progress-bar-container">
-                                  <div class="progress-bar">
-                                    <div
-                                      class="progress-fill"
-                                      [style.width.%]="
-                                        getYearSectionScore(year, section.title)
-                                          .percentage
-                                      "
-                                      [style.background-color]="
-                                        getSectionColor(section.title)
-                                      "
-                                    ></div>
-                                  </div>
-                                  <span class="progress-text">
-                                    {{
-                                      getYearSectionScore(year, section.title)
-                                        .current
-                                    }}
-                                    /
-                                    {{
-                                      getYearSectionScore(year, section.title)
-                                        .total
-                                    }}
-                                    points
-                                  </span>
-                                </div>
-                              </div>
-                              }
-                            </div>
-                          </div>
-                          }
-                        </div>
-                        }
-                      </div>
-                    </div>
-                  </div>
+                  <app-assessment-progress
+                    [assessmentData]="assessmentData"
+                    [availableYears]="availableYears"
+                    [currentYear]="currentYear"
+                    [yearlyScores]="yearlyScores"
+                    [expandedYears]="expandedYears"
+                    [sectionColors]="sectionColors"
+                    (yearDetailsToggled)="onYearDetailsToggled($event)"
+                  ></app-assessment-progress>
                   }
                 </mat-card-content>
               </mat-card>

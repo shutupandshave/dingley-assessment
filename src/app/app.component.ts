@@ -14,6 +14,7 @@ import { CommonModule } from '@angular/common';
 import { AssessmentSectionComponent } from './components/assessment-section/assessment-section.component';
 import { ScoringSidebarComponent } from './components/scoring-sidebar/scoring-sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
+import { AssessmentProgressComponent } from './components/assessment-progress/assessment-progress.component';
 
 @Component({
   selector: 'app-root',
@@ -32,6 +33,7 @@ import { HeaderComponent } from './components/header/header.component';
     AssessmentSectionComponent,
     ScoringSidebarComponent,
     HeaderComponent,
+    AssessmentProgressComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -351,88 +353,14 @@ export class AppComponent implements OnInit {
     return Object.keys(this.selectedScores).length > 0;
   }
 
-  getYearCompletionCount(year: number): number {
-    return Object.keys(this.yearlyScores[year] || {}).length;
-  }
-
-  getYearCompletionPercentage(year: number): number {
-    const completed = this.getYearCompletionCount(year);
-    const total = this.getTotalQuestionsCount();
-    return total > 0 ? Math.round((completed / total) * 100) : 0;
-  }
-
   toggleYearDetails(year: number): void {
     this.expandedYears[year] = !this.expandedYears[year];
     // Also update the selected year to change the sidebar data
     this.switchYear(year);
   }
 
-  getYearTotalScore(year: number): {
-    current: number;
-    total: number;
-    percentage: number;
-  } {
-    if (!this.assessmentData) return { current: 0, total: 0, percentage: 0 };
-
-    let answeredQuestions = 0;
-    let totalQuestions = 0;
-    const yearScores = this.yearlyScores[year] || {};
-
-    this.assessmentData.assessment_framework.sections.forEach(
-      (section: any) => {
-        section.subsections.forEach((subsection: any) => {
-          subsection.questions.forEach((question: any) => {
-            totalQuestions++;
-            const selectedScore = yearScores[question.id];
-            if (selectedScore) {
-              answeredQuestions++;
-            }
-          });
-        });
-      }
-    );
-
-    const percentage =
-      totalQuestions > 0
-        ? Math.round((answeredQuestions / totalQuestions) * 100)
-        : 0;
-
-    return { current: answeredQuestions, total: totalQuestions, percentage };
-  }
-
-  getYearSectionScore(
-    year: number,
-    sectionTitle: string
-  ): { current: number; total: number; percentage: number } {
-    if (!this.assessmentData) return { current: 0, total: 0, percentage: 0 };
-
-    const section = this.assessmentData.assessment_framework.sections.find(
-      (s: any) => s.title === sectionTitle
-    );
-
-    if (!section) return { current: 0, total: 0, percentage: 0 };
-
-    let currentScore = 0;
-    let totalQuestions = 0;
-    const yearScores = this.yearlyScores[year] || {};
-
-    section.subsections.forEach((subsection: any) => {
-      subsection.questions.forEach((question: any) => {
-        totalQuestions++;
-        const selectedScore = yearScores[question.id];
-        if (selectedScore) {
-          const scoreValue = this.getScoreValue(selectedScore);
-          currentScore += scoreValue;
-        }
-      });
-    });
-
-    const maxPossibleScore = totalQuestions * 3;
-    const percentage =
-      maxPossibleScore > 0
-        ? Math.round((currentScore / maxPossibleScore) * 100)
-        : 0;
-
-    return { current: currentScore, total: maxPossibleScore, percentage };
+  onYearDetailsToggled(year: number): void {
+    // Also update the selected year to change the sidebar data
+    this.switchYear(year);
   }
 }
