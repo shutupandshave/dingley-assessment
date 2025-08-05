@@ -5,7 +5,7 @@
         <h1>{{ title }}</h1>
         <p class="subtitle">Early Years Development Assessment Framework</p>
       </div>
-      <div class="toolbar" *ngIf="selectedTabIndex > 0">
+      <div class="toolbar">
         <button
           mat-icon-button
           class="toolbar-button"
@@ -18,7 +18,8 @@
     </div>
   </header>
 
-  <div class="tabs-container" *ngIf="assessmentData">
+  @if (assessmentData) {
+  <div class="tabs-container">
     <mat-tab-group
       mat-align-tabs="center"
       class="assessment-tabs"
@@ -38,12 +39,10 @@
                 development across four key areas:
               </p>
               <div class="overview-grid">
+                @for (section of assessmentData.assessment_framework.sections;
+                track section.title; let i = $index) {
                 <mat-card
                   class="overview-card clickable-card"
-                  *ngFor="
-                    let section of assessmentData.assessment_framework.sections;
-                    let i = index
-                  "
                   (click)="navigateToSection(i)"
                   [style.--section-primary]="
                     getSectionColor(section.title, 'primary')
@@ -65,20 +64,20 @@
                     </p>
                   </mat-card-content>
                 </mat-card>
+                }
               </div>
               <div class="scoring-info">
                 <h3>Scoring System</h3>
                 <div class="scoring-grid">
-                  <div
-                    class="scoring-item"
-                    *ngFor="let score of getScoreValues()"
-                  >
+                  @for (score of getScoreValues(); track score.value) {
+                  <div class="scoring-item">
                     <strong>{{ score.label }}</strong> ({{ score.value }} mark{{
                       score.value > 1 ? "s" : ""
                     }})
                     <br />
                     <small>{{ score.description }}</small>
                   </div>
+                  }
                 </div>
               </div>
             </mat-card-content>
@@ -87,10 +86,9 @@
       </mat-tab>
 
       <!-- Assessment Section Tabs -->
-      <mat-tab
-        *ngFor="let section of assessmentData.assessment_framework.sections"
-        [label]="section.title"
-      >
+      @for (section of assessmentData.assessment_framework.sections; track
+      section.title) {
+      <mat-tab [label]="section.title">
         <app-assessment-section
           [section]="section"
           [scoreValues]="getScoreValues()"
@@ -100,10 +98,12 @@
         >
         </app-assessment-section>
       </mat-tab>
+      }
     </mat-tab-group>
   </div>
-
-  <div class="loading" *ngIf="!assessmentData">
+  } @if (!assessmentData) {
+  <div class="loading">
     <p>Loading assessment data...</p>
   </div>
+  }
 </div>

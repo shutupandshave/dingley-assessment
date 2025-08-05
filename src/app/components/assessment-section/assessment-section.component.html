@@ -23,11 +23,8 @@
     <mat-card-content>
       <div class="subsections">
         <mat-accordion class="subsection-accordion" multi="true">
-          <mat-expansion-panel
-            class="subsection-panel"
-            *ngFor="let subsection of section.subsections"
-            [expanded]="true"
-          >
+          @for (subsection of section.subsections; track subsection.title) {
+          <mat-expansion-panel class="subsection-panel" [expanded]="true">
             <mat-expansion-panel-header>
               <mat-panel-title class="subsection-title">
                 {{ subsection.title }}
@@ -35,9 +32,9 @@
             </mat-expansion-panel-header>
 
             <div class="questions-list">
+              @for (question of subsection.questions; track question.id) {
               <div
                 class="question-item"
-                *ngFor="let question of subsection.questions"
                 [style.background-color]="
                   getQuestionBackgroundColor(question.id)
                 "
@@ -47,19 +44,22 @@
                   <span class="question-text">{{ question.text }}</span>
                 </div>
                 <div class="scoring-buttons">
+                  @for (score of scoreValues; track score.value) {
                   <button
                     mat-stroked-button
-                    *ngFor="let score of scoreValues"
                     [class]="'score-' + score.label.toLowerCase()"
                     [class.selected]="isScoreSelected(question.id, score.label)"
                     (click)="selectScore(question.id, score.label)"
                   >
                     {{ score.label }}
                   </button>
+                  }
                 </div>
               </div>
+              }
             </div>
           </mat-expansion-panel>
+          }
         </mat-accordion>
       </div>
     </mat-card-content>
