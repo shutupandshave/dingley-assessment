@@ -1,0 +1,67 @@
+<!-- Assessment Section Content -->
+<div class="tab-content">
+  <mat-card
+    class="section-card"
+    [style.--section-primary]="getSectionColor('primary')"
+    [style.--section-light]="getSectionColor('light')"
+  >
+    <mat-card-header>
+      <div class="section-header-content">
+        <mat-card-title>{{ section.title }}</mat-card-title>
+        <button
+          mat-icon-button
+          class="expand-collapse-button"
+          (click)="toggleAllPanels()"
+          [matTooltip]="
+            allExpanded ? 'Collapse All Sections' : 'Expand All Sections'
+          "
+        >
+          <mat-icon>{{ allExpanded ? "unfold_less" : "unfold_more" }}</mat-icon>
+        </button>
+      </div>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="subsections">
+        <mat-accordion class="subsection-accordion" multi="true">
+          <mat-expansion-panel
+            class="subsection-panel"
+            *ngFor="let subsection of section.subsections"
+            [expanded]="true"
+          >
+            <mat-expansion-panel-header>
+              <mat-panel-title class="subsection-title">
+                {{ subsection.title }}
+              </mat-panel-title>
+            </mat-expansion-panel-header>
+
+            <div class="questions-list">
+              <div
+                class="question-item"
+                *ngFor="let question of subsection.questions"
+                [style.background-color]="
+                  getQuestionBackgroundColor(question.id)
+                "
+              >
+                <div class="question-content">
+                  <span class="question-number">{{ question.id }}.</span>
+                  <span class="question-text">{{ question.text }}</span>
+                </div>
+                <div class="scoring-buttons">
+                  <button
+                    mat-stroked-button
+                    *ngFor="let score of scoreValues"
+                    [class]="'score-' + score.label.toLowerCase()"
+                    [class.selected]="isScoreSelected(question.id, score.label)"
+                    (click)="selectScore(question.id, score.label)"
+                  >
+                    {{ score.label }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
+        </mat-accordion>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>

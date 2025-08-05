@@ -1,12 +1,30 @@
 <div class="app-container">
   <header class="app-header">
-    <h1>{{ title }}</h1>
-    <p class="subtitle">Early Years Development Assessment Framework</p>
+    <div class="header-content">
+      <div class="header-text">
+        <h1>{{ title }}</h1>
+        <p class="subtitle">Early Years Development Assessment Framework</p>
+      </div>
+      <div class="toolbar" *ngIf="selectedTabIndex > 0">
+        <button
+          mat-icon-button
+          class="toolbar-button"
+          (click)="printAssessment()"
+          matTooltip="Print Assessment"
+        >
+          <mat-icon>print</mat-icon>
+        </button>
+      </div>
+    </div>
   </header>
 
   <div class="tabs-container" *ngIf="assessmentData">
-    <mat-tab-group mat-align-tabs="center" class="assessment-tabs">
-
+    <mat-tab-group
+      mat-align-tabs="center"
+      class="assessment-tabs"
+      [(selectedIndex)]="selectedTabIndex"
+      [style.--current-tab-color]="getCurrentTabColor()"
+    >
       <!-- Home Tab -->
       <mat-tab label="Home">
         <div class="tab-content">
@@ -15,23 +33,50 @@
               <mat-card-title>Welcome to the Assessment</mat-card-title>
             </mat-card-header>
             <mat-card-content>
-              <p>This assessment framework is designed to evaluate early years development across four key areas:</p>
+              <p>
+                This assessment framework is designed to evaluate early years
+                development across four key areas:
+              </p>
               <div class="overview-grid">
-                <mat-card class="overview-card" *ngFor="let section of assessmentData.assessment_framework.sections">
+                <mat-card
+                  class="overview-card clickable-card"
+                  *ngFor="
+                    let section of assessmentData.assessment_framework.sections;
+                    let i = index
+                  "
+                  (click)="navigateToSection(i)"
+                  [style.--section-primary]="
+                    getSectionColor(section.title, 'primary')
+                  "
+                  [style.--section-light]="
+                    getSectionColor(section.title, 'light')
+                  "
+                  [style.--section-hover]="
+                    getSectionColor(section.title, 'hover')
+                  "
+                >
                   <mat-card-header>
                     <mat-card-title>{{ section.title }}</mat-card-title>
                   </mat-card-header>
                   <mat-card-content>
-                    <p>{{ section.subsections.length }} subsections with {{ getTotalQuestions(section) }} questions</p>
+                    <p>
+                      {{ section.subsections.length }} subsections with
+                      {{ getTotalQuestions(section) }} questions
+                    </p>
                   </mat-card-content>
                 </mat-card>
               </div>
               <div class="scoring-info">
                 <h3>Scoring System</h3>
                 <div class="scoring-grid">
-                  <div class="scoring-item" *ngFor="let score of getScoreValues()">
-                    <strong>{{ score.label }}</strong> ({{ score.value }} mark{{ score.value > 1 ? 's' : '' }})
-                    <br>
+                  <div
+                    class="scoring-item"
+                    *ngFor="let score of getScoreValues()"
+                  >
+                    <strong>{{ score.label }}</strong> ({{ score.value }} mark{{
+                      score.value > 1 ? "s" : ""
+                    }})
+                    <br />
                     <small>{{ score.description }}</small>
                   </div>
                 </div>
@@ -42,43 +87,19 @@
       </mat-tab>
 
       <!-- Assessment Section Tabs -->
-      <mat-tab *ngFor="let section of assessmentData.assessment_framework.sections" [label]="section.title">
-        <div class="tab-content">
-          <mat-card class="section-card">
-            <mat-card-header>
-              <mat-card-title>{{ section.title }}</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <div class="subsections">
-                <mat-card class="subsection-card" *ngFor="let subsection of section.subsections">
-                  <mat-card-header>
-                    <mat-card-title>{{ subsection.title }}</mat-card-title>
-                  </mat-card-header>
-                  <mat-card-content>
-                    <div class="questions-list">
-                      <div class="question-item" *ngFor="let question of subsection.questions">
-                        <div class="question-content">
-                          <span class="question-number">{{ question.id }}.</span>
-                          <span class="question-text">{{ question.text }}</span>
-                        </div>
-                        <div class="scoring-buttons">
-                          <button mat-stroked-button *ngFor="let score of getScoreValues()"
-                            [class]="'score-' + score.label.toLowerCase()"
-                            [class.selected]="isScoreSelected(question.id, score.label)"
-                            (click)="selectScore(question.id, score.label)">
-                            {{ score.label }}
-                          </button>
-                        </div>
-                      </div>
-                    </div>
-                  </mat-card-content>
-                </mat-card>
-              </div>
-            </mat-card-content>
-          </mat-card>
-        </div>
+      <mat-tab
+        *ngFor="let section of assessmentData.assessment_framework.sections"
+        [label]="section.title"
+      >
+        <app-assessment-section
+          [section]="section"
+          [scoreValues]="getScoreValues()"
+          [selectedScores]="selectedScores"
+          [sectionColors]="sectionColors"
+          (scoreSelected)="onScoreSelected($event)"
+        >
+        </app-assessment-section>
       </mat-tab>
-
     </mat-tab-group>
   </div>
 
