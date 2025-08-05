@@ -1,0 +1,129 @@
+<div class="sidebar-content">
+  <div class="sidebar-header">
+    <div class="sidebar-title">
+      <h3>Assessment Scores</h3>
+      <div class="year-indicator">
+        <span class="year-label">{{ selectedYear }}</span>
+        @if (selectedYear === currentYear) {
+        <span class="current-badge">Current</span>
+        }
+      </div>
+    </div>
+    <button
+      mat-icon-button
+      (click)="onToggleSidebar()"
+      matTooltip="Close Scoring Panel"
+    >
+      <mat-icon>close</mat-icon>
+    </button>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <!-- Overall Score -->
+  <div class="score-section">
+    <h4>Overall Completion</h4>
+    <div class="score-display">
+      <div class="score-progress">
+        <div class="score-bar">
+          <div
+            class="score-fill overall"
+            [style.width.%]="getTotalScore().percentage"
+          ></div>
+        </div>
+        <span class="score-text">
+          {{ getTotalScore().current }} / {{ getTotalScore().total }} questions
+          ({{ getTotalScore().percentage }}%)
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <mat-divider></mat-divider>
+
+  <!-- Section Scores -->
+  <div class="score-section">
+    <h4>Section Scores</h4>
+    @for (section of assessmentData.assessment_framework.sections; track
+    section.title) {
+    <div class="section-score">
+      <div class="section-score-header">
+        <span class="section-name">{{ section.title }}</span>
+      </div>
+      <div class="score-progress">
+        <div class="score-bar">
+          <div
+            class="score-fill"
+            [style.width.%]="getSectionScore(section.title).percentage"
+            [style.background-color]="getSectionColor(section.title)"
+          ></div>
+        </div>
+        <span class="score-text">
+          {{ getSectionScore(section.title).current }} /
+          {{ getSectionScore(section.title).total }}
+          ({{ getSectionScore(section.title).percentage }}%)
+        </span>
+      </div>
+    </div>
+    }
+  </div>
+
+  <!-- Current Section Subsections (if viewing a specific section) -->
+  @if (selectedTabIndex > 0) {
+  <mat-divider></mat-divider>
+  <div class="score-section">
+    <h4>{{ getCurrentSectionTitle() }} - Subsections</h4>
+    @for (subsection of getCurrentSectionSubsections(); track subsection.title)
+    {
+    <div class="subsection-score">
+      <div class="subsection-score-header">
+        <span class="subsection-name">{{ subsection.title }}</span>
+      </div>
+      <div class="score-progress small">
+        <div class="score-bar">
+          <div
+            class="score-fill"
+            [style.width.%]="
+              getSubsectionScore(getCurrentSectionTitle(), subsection.title)
+                .percentage
+            "
+            [style.background-color]="getSectionColor(getCurrentSectionTitle())"
+          ></div>
+        </div>
+        <span class="score-text">
+          {{
+            getSubsectionScore(getCurrentSectionTitle(), subsection.title)
+              .current
+          }}
+          /
+          {{
+            getSubsectionScore(getCurrentSectionTitle(), subsection.title).total
+          }}
+          ({{
+            getSubsectionScore(getCurrentSectionTitle(), subsection.title)
+              .percentage
+          }}%)
+        </span>
+      </div>
+    </div>
+    }
+  </div>
+  }
+
+  <mat-divider></mat-divider>
+
+  <!-- Score Distribution -->
+  <div class="score-section">
+    <h4>Score Distribution</h4>
+    <div class="distribution-chips">
+      @for (score of scoreValues; track score.value) {
+      <mat-chip
+        class="score-chip"
+        [class]="'chip-' + score.label.toLowerCase()"
+      >
+        {{ score.label }}: {{ getScoreDistribution()[score.label] || 0 }}
+      </mat-chip>
+      }
+    </div>
+  </div>
+</div>

@@ -1,0 +1,154 @@
+:host {
+  display: block;
+  height: 100%;
+}
+
+.sidebar-content {
+  padding: 16px;
+  height: 100%;
+  overflow-y: auto;
+}
+
+.sidebar-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+
+  .sidebar-title {
+    flex: 1;
+
+    h3 {
+      margin: 0 0 8px 0;
+      font-size: 1.2rem;
+      color: #333;
+    }
+
+    .year-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+
+      .year-label {
+        font-size: 0.9rem;
+        color: #666;
+        font-weight: 500;
+      }
+
+      .current-badge {
+        background: #4caf50;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 12px;
+        font-size: 0.75rem;
+        font-weight: 500;
+      }
+    }
+  }
+}
+
+.score-section {
+  margin-bottom: 24px;
+
+  h4 {
+    margin: 0 0 12px 0;
+    font-size: 1rem;
+    color: #555;
+    font-weight: 600;
+    margin-top: 8px;
+  }
+
+  .score-display {
+    margin-bottom: 8px;
+  }
+
+  .score-progress {
+    margin-bottom: 12px;
+
+    &.small {
+      margin-bottom: 8px;
+    }
+
+    .score-bar {
+      height: 8px;
+      background-color: #f0f0f0;
+      border-radius: 4px;
+      overflow: hidden;
+      margin-bottom: 4px;
+
+      .score-fill {
+        height: 100%;
+        transition: width 0.3s ease;
+        border-radius: 4px;
+
+        &.overall {
+          background: linear-gradient(45deg, #2196f3, #21cbf3);
+        }
+      }
+    }
+
+    .score-text {
+      font-size: 0.85rem;
+      color: #666;
+    }
+  }
+
+  .section-score,
+  .subsection-score {
+    margin-bottom: 16px;
+
+    .section-score-header,
+    .subsection-score-header {
+      margin-bottom: 4px;
+
+      .section-name,
+      .subsection-name {
+        font-size: 0.9rem;
+        color: #333;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .subsection-score {
+    margin-bottom: 12px;
+    padding-left: 12px;
+    border-left: 2px solid #f0f0f0;
+
+    .subsection-score-header .subsection-name {
+      font-size: 0.85rem;
+      color: #555;
+      font-weight: 400;
+    }
+  }
+
+  .distribution-chips {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .score-chip {
+      font-size: 0.85rem;
+      padding: 8px 12px;
+      border-radius: 16px;
+
+      &.chip-emerging {
+        background-color: #ffebee;
+        color: #c62828;
+        border: 1px solid #f44336;
+      }
+
+      &.chip-supported {
+        background-color: #fffbf0;
+        color: #f57c00;
+        border: 1px solid #ffc107;
+      }
+
+      &.chip-independent {
+        background-color: #e8f5e8;
+        color: #2e7d32;
+        border: 1px solid #4caf50;
+      }
+    }
+  }
+}

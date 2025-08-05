@@ -1,0 +1,59 @@
+<header class="app-header">
+  <div class="header-content">
+    <div class="header-text">
+      <h1>{{ title }}</h1>
+      <p class="subtitle">Early Years Development Assessment Framework</p>
+    </div>
+    <div class="toolbar">
+      <!-- <div class="year-selector">
+        <label for="year-select">Assessment Year:</label>
+        <select
+          id="year-select"
+          [value]="selectedYear"
+          (change)="onYearChange($event)"
+          class="year-dropdown"
+        >
+          @for (year of availableYears; track year) {
+          <option [value]="year">
+            {{ year }}{{ year === currentYear ? " (Current)" : "" }}
+          </option>
+          }
+        </select>
+      </div> -->
+      <button
+        mat-raised-button
+        class="fake-data-button"
+        (click)="onLoadFakeData()"
+        matTooltip="Load sample assessment data"
+      >
+        <mat-icon>psychology</mat-icon>
+        Load Fake Data
+      </button>
+      <button
+        mat-raised-button
+        class="clear-data-button"
+        (click)="onClearAllData()"
+        matTooltip="Clear all assessment data and start fresh"
+      >
+        <mat-icon>clear_all</mat-icon>
+        Clear All Data
+      </button>
+      <button
+        mat-icon-button
+        class="toolbar-button"
+        (click)="onToggleSidebar()"
+        matTooltip="Toggle Scoring Overview"
+      >
+        <mat-icon>assessment</mat-icon>
+      </button>
+      <button
+        mat-icon-button
+        class="toolbar-button"
+        (click)="onPrintAssessment()"
+        matTooltip="Print Assessment"
+      >
+        <mat-icon>print</mat-icon>
+      </button>
+    </div>
+  </div>
+</header>

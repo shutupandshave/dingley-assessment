@@ -1,106 +1,269 @@
 <div class="app-container">
-  <header class="app-header">
-    <div class="header-content">
-      <div class="header-text">
-        <h1>{{ title }}</h1>
-        <p class="subtitle">Early Years Development Assessment Framework</p>
-      </div>
-      <div class="toolbar">
-        <button
-          mat-icon-button
-          class="toolbar-button"
-          (click)="printAssessment()"
-          matTooltip="Print Assessment"
-        >
-          <mat-icon>print</mat-icon>
-        </button>
-      </div>
-    </div>
-  </header>
+  <app-header
+    [title]="title"
+    [selectedYear]="selectedYear"
+    [currentYear]="currentYear"
+    [availableYears]="availableYears"
+    (loadFakeData)="loadFakeData()"
+    (clearAllData)="clearAllData()"
+    (toggleSidebar)="toggleSidebar()"
+    (printAssessment)="printAssessment()"
+    (yearChange)="onYearChange($event)"
+  ></app-header>
 
   @if (assessmentData) {
-  <div class="tabs-container">
-    <mat-tab-group
-      mat-align-tabs="center"
-      class="assessment-tabs"
-      [(selectedIndex)]="selectedTabIndex"
-      [style.--current-tab-color]="getCurrentTabColor()"
+  <!-- Sidebar Tab/Handle - positioned outside sidenav container -->
+  <div
+    class="sidebar-tab"
+    [class.sidebar-open]="sidebarOpen"
+    (click)="toggleSidebar()"
+    matTooltip="Toggle Scoring Overview"
+    matTooltipPosition="left"
+  >
+    <mat-icon>assessment</mat-icon>
+  </div>
+
+  <mat-sidenav-container class="main-container">
+    <!-- Scoring Sidebar -->
+    <mat-sidenav
+      mode="side"
+      [opened]="sidebarOpen"
+      position="end"
+      class="scoring-sidebar"
     >
-      <!-- Home Tab -->
-      <mat-tab label="Home">
-        <div class="tab-content">
-          <mat-card class="welcome-card">
-            <mat-card-header>
-              <mat-card-title>Welcome to the Assessment</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <p>
-                This assessment framework is designed to evaluate early years
-                development across four key areas:
-              </p>
-              <div class="overview-grid">
-                @for (section of assessmentData.assessment_framework.sections;
-                track section.title; let i = $index) {
-                <mat-card
-                  class="overview-card clickable-card"
-                  (click)="navigateToSection(i)"
-                  [style.--section-primary]="
-                    getSectionColor(section.title, 'primary')
-                  "
-                  [style.--section-light]="
-                    getSectionColor(section.title, 'light')
-                  "
-                  [style.--section-hover]="
-                    getSectionColor(section.title, 'hover')
-                  "
-                >
-                  <mat-card-header>
-                    <mat-card-title>{{ section.title }}</mat-card-title>
-                  </mat-card-header>
-                  <mat-card-content>
-                    <p>
-                      {{ section.subsections.length }} subsections with
-                      {{ getTotalQuestions(section) }} questions
-                    </p>
-                  </mat-card-content>
-                </mat-card>
-                }
-              </div>
-              <div class="scoring-info">
-                <h3>Scoring System</h3>
-                <div class="scoring-grid">
-                  @for (score of getScoreValues(); track score.value) {
-                  <div class="scoring-item">
-                    <strong>{{ score.label }}</strong> ({{ score.value }} mark{{
-                      score.value > 1 ? "s" : ""
-                    }})
-                    <br />
-                    <small>{{ score.description }}</small>
+      <app-scoring-sidebar
+        [selectedYear]="selectedYear"
+        [currentYear]="currentYear"
+        [assessmentData]="assessmentData"
+        [selectedTabIndex]="selectedTabIndex"
+        [scoreValues]="getScoreValues()"
+        [selectedScores]="selectedScores"
+        [sectionColors]="sectionColors"
+        (toggleSidebar)="toggleSidebar()"
+      ></app-scoring-sidebar>
+    </mat-sidenav>
+
+    <!-- Main Content -->
+    <mat-sidenav-content class="main-content">
+      <div class="tabs-container">
+        <mat-tab-group
+          mat-align-tabs="center"
+          class="assessment-tabs"
+          [(selectedIndex)]="selectedTabIndex"
+          [style.--current-tab-color]="getCurrentTabColor()"
+        >
+          <!-- Home Tab -->
+          <mat-tab label="Home">
+            <div class="tab-content">
+              <mat-card class="welcome-card">
+                <mat-card-header>
+                  <mat-card-title>Welcome to the Assessment</mat-card-title>
+                </mat-card-header>
+                <mat-card-content>
+                  <p>
+                    This assessment framework is designed to evaluate early
+                    years development across four key areas:
+                  </p>
+                  <div class="overview-grid">
+                    @for (section of
+                    assessmentData.assessment_framework.sections; track
+                    section.title; let i = $index) {
+                    <mat-card
+                      class="overview-card clickable-card"
+                      (click)="navigateToSection(i)"
+                      [style.--section-primary]="
+                        getSectionColor(section.title, 'primary')
+                      "
+                      [style.--section-light]="
+                        getSectionColor(section.title, 'light')
+                      "
+                      [style.--section-hover]="
+                        getSectionColor(section.title, 'hover')
+                      "
+                    >
+                      <mat-card-header>
+                        <mat-card-title>{{ section.title }}</mat-card-title>
+                      </mat-card-header>
+                      <mat-card-content>
+                        <p>
+                          {{ section.subsections.length }} subsections with
+                          {{ getTotalQuestions(section) }} questions
+                        </p>
+                      </mat-card-content>
+                    </mat-card>
+                    }
+                  </div>
+                  <div class="scoring-info">
+                    <h3>Scoring System</h3>
+                    <div class="scoring-grid">
+                      @for (score of getScoreValues(); track score.value) {
+                      <div class="scoring-item">
+                        <strong>{{ score.label }}</strong> ({{
+                          score.value
+                        }}
+                        mark{{ score.value > 1 ? "s" : "" }})
+                        <br />
+                        <small>{{ score.description }}</small>
+                      </div>
+                      }
+                    </div>
+                  </div>
+
+                  <!-- Assessment Progress Overview -->
+                  @if (hasAnyScores()) {
+                  <div class="progress-overview">
+                    <h3>Assessment Progress</h3>
+
+                    <!-- Year Comparison Summary with Accordions -->
+                    <div class="year-summary">
+                      <h4>Completion by Year</h4>
+                      <div class="year-completion-grid">
+                        @for (year of availableYears; track year) {
+                        <div
+                          class="year-completion-item"
+                          [class.current-year]="year === currentYear"
+                        >
+                          <div
+                            class="year-header"
+                            (click)="toggleYearDetails(year)"
+                          >
+                            <div class="year-title-section">
+                              <span class="year-title">{{ year }}</span>
+                              @if (year === currentYear) {
+                              <span class="current-indicator">Current</span>
+                              }
+                            </div>
+                            <div class="completion-summary">
+                              <span class="completion-text">
+                                {{ getYearCompletionCount(year) }} /
+                                {{ getTotalQuestionsCount() }} questions ({{
+                                  getYearCompletionPercentage(year)
+                                }}%)
+                              </span>
+                              <mat-icon
+                                class="expand-icon"
+                                [class.expanded]="expandedYears[year]"
+                              >
+                                expand_more
+                              </mat-icon>
+                            </div>
+                          </div>
+                          <div class="completion-stats">
+                            <div class="completion-bar">
+                              <div
+                                class="completion-fill"
+                                [style.width.%]="
+                                  getYearCompletionPercentage(year)
+                                "
+                                [class.current-year-fill]="year === currentYear"
+                              ></div>
+                            </div>
+                          </div>
+
+                          <!-- Expandable Year Details -->
+                          @if (expandedYears[year]) {
+                          <div class="year-details">
+                            <!-- Overall Progress for this year -->
+                            <div class="year-overall-progress">
+                              <div class="progress-header">
+                                <span>Overall Completion - {{ year }}</span>
+                                <span class="progress-percentage"
+                                  >{{
+                                    getYearTotalScore(year).percentage
+                                  }}%</span
+                                >
+                              </div>
+                              <div class="progress-bar-container">
+                                <div class="progress-bar">
+                                  <div
+                                    class="progress-fill overall"
+                                    [style.width.%]="
+                                      getYearTotalScore(year).percentage
+                                    "
+                                  ></div>
+                                </div>
+                                <span class="progress-text">
+                                  {{ getYearTotalScore(year).current }} /
+                                  {{ getYearTotalScore(year).total }} questions
+                                </span>
+                              </div>
+                            </div>
+
+                            <!-- Section Progress for this year -->
+                            <div class="year-sections-progress">
+                              @for (section of
+                              assessmentData.assessment_framework.sections;
+                              track section.title) {
+                              <div class="section-progress-item">
+                                <div class="progress-header">
+                                  <span>{{ section.title }}</span>
+                                  <span class="progress-percentage"
+                                    >{{
+                                      getYearSectionScore(year, section.title)
+                                        .percentage
+                                    }}%</span
+                                  >
+                                </div>
+                                <div class="progress-bar-container">
+                                  <div class="progress-bar">
+                                    <div
+                                      class="progress-fill"
+                                      [style.width.%]="
+                                        getYearSectionScore(year, section.title)
+                                          .percentage
+                                      "
+                                      [style.background-color]="
+                                        getSectionColor(section.title)
+                                      "
+                                    ></div>
+                                  </div>
+                                  <span class="progress-text">
+                                    {{
+                                      getYearSectionScore(year, section.title)
+                                        .current
+                                    }}
+                                    /
+                                    {{
+                                      getYearSectionScore(year, section.title)
+                                        .total
+                                    }}
+                                    points
+                                  </span>
+                                </div>
+                              </div>
+                              }
+                            </div>
+                          </div>
+                          }
+                        </div>
+                        }
+                      </div>
+                    </div>
                   </div>
                   }
-                </div>
-              </div>
-            </mat-card-content>
-          </mat-card>
-        </div>
-      </mat-tab>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </mat-tab>
 
-      <!-- Assessment Section Tabs -->
-      @for (section of assessmentData.assessment_framework.sections; track
-      section.title) {
-      <mat-tab [label]="section.title">
-        <app-assessment-section
-          [section]="section"
-          [scoreValues]="getScoreValues()"
-          [selectedScores]="selectedScores"
-          [sectionColors]="sectionColors"
-          (scoreSelected)="onScoreSelected($event)"
-        >
-        </app-assessment-section>
-      </mat-tab>
-      }
-    </mat-tab-group>
-  </div>
+          <!-- Assessment Section Tabs -->
+          @for (section of assessmentData.assessment_framework.sections; track
+          section.title) {
+          <mat-tab [label]="section.title">
+            <app-assessment-section
+              [section]="section"
+              [scoreValues]="getScoreValues()"
+              [selectedScores]="selectedScores"
+              [sectionColors]="sectionColors"
+              (scoreSelected)="onScoreSelected($event)"
+            >
+            </app-assessment-section>
+          </mat-tab>
+          }
+        </mat-tab-group>
+      </div>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
   } @if (!assessmentData) {
   <div class="loading">
     <p>Loading assessment data...</p>

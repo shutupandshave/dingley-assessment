@@ -4,9 +4,16 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatChipsModule } from '@angular/material/chips';
+import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { AssessmentSectionComponent } from './components/assessment-section/assessment-section.component';
+import { ScoringSidebarComponent } from './components/scoring-sidebar/scoring-sidebar.component';
+import { HeaderComponent } from './components/header/header.component';
 
 @Component({
   selector: 'app-root',
@@ -16,8 +23,15 @@ import { AssessmentSectionComponent } from './components/assessment-section/asse
     MatButtonModule,
     MatIconModule,
     MatTooltipModule,
+    MatSidenavModule,
+    MatListModule,
+    MatDividerModule,
+    MatChipsModule,
+    FormsModule,
     CommonModule,
     AssessmentSectionComponent,
+    ScoringSidebarComponent,
+    HeaderComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -27,6 +41,14 @@ export class AppComponent implements OnInit {
   assessmentData: any = null;
   selectedScores: { [key: number]: string } = {};
   selectedTabIndex: number = 0;
+  sidebarOpen: boolean = false;
+
+  // Year tracking
+  currentYear: number = new Date().getFullYear();
+  selectedYear: number = new Date().getFullYear();
+  availableYears: number[] = [];
+  yearlyScores: { [year: number]: { [key: number]: string } } = {};
+  expandedYears: { [year: number]: boolean } = {};
 
   // Color mapping for different sections
   sectionColors = {
@@ -36,9 +58,9 @@ export class AppComponent implements OnInit {
       hover: '#BBDEFB',
     },
     'Sensory and physical': {
-      primary: '#FF5722',
-      light: '#FFF3E0',
-      hover: '#FFCCBC',
+      primary: '#FFC107',
+      light: '#FFFBF0',
+      hover: '#FFE082',
     },
     'Social and emotional': {
       primary: '#9C27B0',
@@ -56,6 +78,25 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.loadAssessmentData();
+    this.initializeYears();
+  }
+
+  initializeYears() {
+    // Initialize available years (current year + 2 previous years)
+    this.availableYears = [
+      this.currentYear,
+      this.currentYear - 1,
+      this.currentYear - 2,
+    ];
+
+    // Initialize empty scores for each year
+    this.availableYears.forEach((year) => {
+      this.yearlyScores[year] = {};
+      this.expandedYears[year] = false; // Initialize accordion state
+    });
+
+    // Set selected scores to current year by default
+    this.selectedScores = this.yearlyScores[this.selectedYear];
   }
 
   loadAssessmentData() {
@@ -104,7 +145,10 @@ export class AppComponent implements OnInit {
 
   selectScore(questionId: number, score: string) {
     this.selectedScores[questionId] = score;
-    console.log(`Question ${questionId} scored as: ${score}`);
+    this.yearlyScores[this.selectedYear][questionId] = score;
+    console.log(
+      `Question ${questionId} scored as: ${score} for year ${this.selectedYear}`
+    );
   }
 
   onScoreSelected(event: { questionId: number; score: string }) {
@@ -142,5 +186,253 @@ export class AppComponent implements OnInit {
 
   printAssessment(): void {
     window.print();
+  }
+
+  loadFakeData(): void {
+    if (!this.assessmentData) return;
+
+    // Clear existing data
+    this.availableYears.forEach((year) => {
+      this.yearlyScores[year] = {};
+    });
+
+    const scoreOptions = ['Emerging', 'Supported', 'Independent'];
+
+    this.assessmentData.assessment_framework.sections.forEach(
+      (section: any) => {
+        section.subsections.forEach((subsection: any) => {
+          subsection.questions.forEach((question: any) => {
+            // Generate data for each year with different completion rates
+            this.availableYears.forEach((year, yearIndex) => {
+              let shouldHaveScore = false;
+
+              if (year === this.currentYear) {
+                // Current year: 50% completion rate
+                shouldHaveScore = Math.random() < 0.5;
+              } else {
+                // Previous years: 100% completion rate (all questions answered)
+                shouldHaveScore = true;
+              }
+
+              if (shouldHaveScore) {
+                // Create realistic distribution with slight improvement over years
+                const rand = Math.random();
+                let score: string;
+
+                if (year === this.currentYear) {
+                  // Current year: more emerging/supported (30% Emerging, 45% Supported, 25% Independent)
+                  if (rand < 0.3) {
+                    score = 'Emerging';
+                  } else if (rand < 0.75) {
+                    score = 'Supported';
+                  } else {
+                    score = 'Independent';
+                  }
+                } else if (year === this.currentYear - 1) {
+                  // Last year: balanced distribution (25% Emerging, 40% Supported, 35% Independent)
+                  if (rand < 0.25) {
+                    score = 'Emerging';
+                  } else if (rand < 0.65) {
+                    score = 'Supported';
+                  } else {
+                    score = 'Independent';
+                  }
+                } else {
+                  // Two years ago: more independent (20% Emerging, 35% Supported, 45% Independent)
+                  if (rand < 0.2) {
+                    score = 'Emerging';
+                  } else if (rand < 0.55) {
+                    score = 'Supported';
+                  } else {
+                    score = 'Independent';
+                  }
+                }
+
+                this.yearlyScores[year][question.id] = score;
+              }
+            });
+          });
+        });
+      }
+    );
+
+    // Update current selected scores
+    this.selectedScores = this.yearlyScores[this.selectedYear];
+
+    const currentYearCount = Object.keys(
+      this.yearlyScores[this.currentYear]
+    ).length;
+    const totalQuestions = this.getTotalQuestionsCount();
+
+    console.log(`Fake assessment data loaded:`);
+    console.log(
+      `- ${
+        this.currentYear
+      } (current): ${currentYearCount}/${totalQuestions} questions (${Math.round(
+        (currentYearCount / totalQuestions) * 100
+      )}%)`
+    );
+    this.availableYears.slice(1).forEach((year) => {
+      const count = Object.keys(this.yearlyScores[year]).length;
+      console.log(
+        `- ${year} (previous): ${count}/${totalQuestions} questions (${Math.round(
+          (count / totalQuestions) * 100
+        )}%) - Complete`
+      );
+    });
+  }
+
+  clearAllData(): void {
+    // Clear all scores for all years
+    this.availableYears.forEach((year) => {
+      this.yearlyScores[year] = {};
+    });
+
+    // Reset selected scores to empty for current year
+    this.selectedScores = {};
+
+    // Reset expanded years accordion state
+    this.availableYears.forEach((year) => {
+      this.expandedYears[year] = false;
+    });
+
+    console.log(
+      'All assessment data has been cleared. Starting fresh assessment.'
+    );
+  }
+
+  getTotalQuestionsCount(): number {
+    if (!this.assessmentData) return 0;
+
+    let totalQuestions = 0;
+    this.assessmentData.assessment_framework.sections.forEach(
+      (section: any) => {
+        section.subsections.forEach((subsection: any) => {
+          totalQuestions += subsection.questions.length;
+        });
+      }
+    );
+
+    return totalQuestions;
+  }
+
+  switchYear(year: number): void {
+    this.selectedYear = year;
+    this.selectedScores = this.yearlyScores[year];
+    console.log(
+      `Switched to year ${year}. Scores available: ${
+        Object.keys(this.selectedScores).length
+      }`
+    );
+  }
+
+  onYearChange(event: Event): void {
+    const target = event.target as HTMLSelectElement;
+    const year = parseInt(target.value, 10);
+    this.switchYear(year);
+  }
+
+  toggleSidebar(): void {
+    this.sidebarOpen = !this.sidebarOpen;
+  }
+
+  getScoreValue(scoreLabel: string): number {
+    const scoring = this.assessmentData?.assessment_framework?.scoring;
+    if (!scoring) return 0;
+
+    const scoreKey = Object.keys(scoring).find(
+      (key) => scoring[key].label === scoreLabel
+    );
+
+    return scoreKey ? scoring[scoreKey].value : 0;
+  }
+
+  hasAnyScores(): boolean {
+    return Object.keys(this.selectedScores).length > 0;
+  }
+
+  getYearCompletionCount(year: number): number {
+    return Object.keys(this.yearlyScores[year] || {}).length;
+  }
+
+  getYearCompletionPercentage(year: number): number {
+    const completed = this.getYearCompletionCount(year);
+    const total = this.getTotalQuestionsCount();
+    return total > 0 ? Math.round((completed / total) * 100) : 0;
+  }
+
+  toggleYearDetails(year: number): void {
+    this.expandedYears[year] = !this.expandedYears[year];
+    // Also update the selected year to change the sidebar data
+    this.switchYear(year);
+  }
+
+  getYearTotalScore(year: number): {
+    current: number;
+    total: number;
+    percentage: number;
+  } {
+    if (!this.assessmentData) return { current: 0, total: 0, percentage: 0 };
+
+    let answeredQuestions = 0;
+    let totalQuestions = 0;
+    const yearScores = this.yearlyScores[year] || {};
+
+    this.assessmentData.assessment_framework.sections.forEach(
+      (section: any) => {
+        section.subsections.forEach((subsection: any) => {
+          subsection.questions.forEach((question: any) => {
+            totalQuestions++;
+            const selectedScore = yearScores[question.id];
+            if (selectedScore) {
+              answeredQuestions++;
+            }
+          });
+        });
+      }
+    );
+
+    const percentage =
+      totalQuestions > 0
+        ? Math.round((answeredQuestions / totalQuestions) * 100)
+        : 0;
+
+    return { current: answeredQuestions, total: totalQuestions, percentage };
+  }
+
+  getYearSectionScore(
+    year: number,
+    sectionTitle: string
+  ): { current: number; total: number; percentage: number } {
+    if (!this.assessmentData) return { current: 0, total: 0, percentage: 0 };
+
+    const section = this.assessmentData.assessment_framework.sections.find(
+      (s: any) => s.title === sectionTitle
+    );
+
+    if (!section) return { current: 0, total: 0, percentage: 0 };
+
+    let currentScore = 0;
+    let totalQuestions = 0;
+    const yearScores = this.yearlyScores[year] || {};
+
+    section.subsections.forEach((subsection: any) => {
+      subsection.questions.forEach((question: any) => {
+        totalQuestions++;
+        const selectedScore = yearScores[question.id];
+        if (selectedScore) {
+          const scoreValue = this.getScoreValue(selectedScore);
+          currentScore += scoreValue;
+        }
+      });
+    });
+
+    const maxPossibleScore = totalQuestions * 3;
+    const percentage =
+      maxPossibleScore > 0
+        ? Math.round((currentScore / maxPossibleScore) * 100)
+        : 0;
+
+    return { current: currentScore, total: maxPossibleScore, percentage };
   }
 }
