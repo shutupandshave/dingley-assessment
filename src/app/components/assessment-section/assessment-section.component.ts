@@ -108,4 +108,17 @@ export class AssessmentSectionComponent {
       });
     }
   }
+
+  getAnsweredQuestionsCount(subsection: any): string {
+    if (!subsection || !subsection.questions) {
+      return '0/0';
+    }
+
+    const totalQuestions = subsection.questions.length;
+    const answeredQuestions = subsection.questions.filter(
+      (question: any) => this.selectedScores[question.id]
+    ).length;
+
+    return `${answeredQuestions}/${totalQuestions}`;
+  }
 }

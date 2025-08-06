@@ -54,76 +54,17 @@
         >
           <!-- Home Tab -->
           <mat-tab label="Home">
-            <div class="tab-content">
-              <mat-card class="welcome-card">
-                <mat-card-header>
-                  <mat-card-title>Welcome to the Assessment</mat-card-title>
-                </mat-card-header>
-                <mat-card-content>
-                  <p>
-                    This assessment framework is designed to evaluate early
-                    years development across four key areas:
-                  </p>
-                  <div class="overview-grid">
-                    @for (section of
-                    assessmentData.assessment_framework.sections; track
-                    section.title; let i = $index) {
-                    <mat-card
-                      class="overview-card clickable-card"
-                      (click)="navigateToSection(i)"
-                      [style.--section-primary]="
-                        getSectionColor(section.title, 'primary')
-                      "
-                      [style.--section-light]="
-                        getSectionColor(section.title, 'light')
-                      "
-                      [style.--section-hover]="
-                        getSectionColor(section.title, 'hover')
-                      "
-                    >
-                      <mat-card-header>
-                        <mat-card-title>{{ section.title }}</mat-card-title>
-                      </mat-card-header>
-                      <mat-card-content>
-                        <p>
-                          {{ section.subsections.length }} subsections with
-                          {{ getTotalQuestions(section) }} questions
-                        </p>
-                      </mat-card-content>
-                    </mat-card>
-                    }
-                  </div>
-                  <div class="scoring-info">
-                    <h3>Scoring System</h3>
-                    <div class="scoring-grid">
-                      @for (score of getScoreValues(); track score.value) {
-                      <div class="scoring-item">
-                        <strong>{{ score.label }}</strong> ({{
-                          score.value
-                        }}
-                        mark{{ score.value > 1 ? "s" : "" }})
-                        <br />
-                        <small>{{ score.description }}</small>
-                      </div>
-                      }
-                    </div>
-                  </div>
-
-                  <!-- Assessment Progress Overview -->
-                  @if (hasAnyScores()) {
-                  <app-assessment-progress
-                    [assessmentData]="assessmentData"
-                    [availableYears]="availableYears"
-                    [currentYear]="currentYear"
-                    [yearlyScores]="yearlyScores"
-                    [expandedYears]="expandedYears"
-                    [sectionColors]="sectionColors"
-                    (yearDetailsToggled)="onYearDetailsToggled($event)"
-                  ></app-assessment-progress>
-                  }
-                </mat-card-content>
-              </mat-card>
-            </div>
+            <app-home
+              [assessmentData]="assessmentData"
+              [selectedScores]="selectedScores"
+              [availableYears]="availableYears"
+              [currentYear]="currentYear"
+              [yearlyScores]="yearlyScores"
+              [expandedYears]="expandedYears"
+              [sectionColors]="sectionColors"
+              (navigateToSection)="navigateToSection($event)"
+              (yearDetailsToggled)="onYearDetailsToggled($event)"
+            ></app-home>
           </mat-tab>
 
           <!-- Assessment Section Tabs -->

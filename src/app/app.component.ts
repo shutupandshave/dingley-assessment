@@ -14,7 +14,7 @@ import { CommonModule } from '@angular/common';
 import { AssessmentSectionComponent } from './components/assessment-section/assessment-section.component';
 import { ScoringSidebarComponent } from './components/scoring-sidebar/scoring-sidebar.component';
 import { HeaderComponent } from './components/header/header.component';
-import { AssessmentProgressComponent } from './components/assessment-progress/assessment-progress.component';
+import { HomeComponent } from './components/home/home.component';
 
 @Component({
   selector: 'app-root',
@@ -33,7 +33,7 @@ import { AssessmentProgressComponent } from './components/assessment-progress/as
     AssessmentSectionComponent,
     ScoringSidebarComponent,
     HeaderComponent,
-    AssessmentProgressComponent,
+    HomeComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
@@ -107,42 +107,11 @@ export class AppComponent implements OnInit {
       next: (data) => {
         this.assessmentData = data;
         console.log('Assessment data loaded successfully:', data);
-        this.logSensoryPhysicalData();
       },
       error: (error) => {
         console.error('Error loading assessment data:', error);
       },
     });
-  }
-
-  logSensoryPhysicalData() {
-    if (this.assessmentData) {
-      const sensorySection =
-        this.assessmentData.assessment_framework.sections.find(
-          (s: any) => s.title === 'Sensory and physical'
-        );
-      if (sensorySection) {
-        console.log('Sensory and physical section:', sensorySection);
-        sensorySection.subsections.forEach((subsection: any) => {
-          console.log(
-            `${subsection.title}: ${subsection.questions.length} questions`
-          );
-          console.log('Questions:', subsection.questions);
-        });
-      }
-    }
-  }
-
-  getTotalQuestions(section: any): number {
-    return section.subsections.reduce((total: number, subsection: any) => {
-      return total + subsection.questions.length;
-    }, 0);
-  }
-
-  getScoreValues(): any[] {
-    if (!this.assessmentData) return [];
-    const scoring = this.assessmentData.assessment_framework.scoring;
-    return Object.keys(scoring).map((key) => scoring[key]);
   }
 
   selectScore(questionId: number, score: string) {
@@ -166,15 +135,6 @@ export class AppComponent implements OnInit {
     this.selectedTabIndex = sectionIndex + 1;
   }
 
-  getSectionColor(
-    sectionTitle: string,
-    colorType: 'primary' | 'light' | 'hover' = 'primary'
-  ): string {
-    const colors =
-      this.sectionColors[sectionTitle as keyof typeof this.sectionColors];
-    return colors ? colors[colorType] : '#1976d2';
-  }
-
   getCurrentTabColor(): string {
     if (this.selectedTabIndex === 0 || !this.assessmentData) {
       return '#f5f5f5'; // Default home tab color
@@ -184,6 +144,21 @@ export class AppComponent implements OnInit {
     const section =
       this.assessmentData.assessment_framework.sections[sectionIndex];
     return section ? this.getSectionColor(section.title, 'light') : '#f5f5f5';
+  }
+
+  getSectionColor(
+    sectionTitle: string,
+    colorType: 'primary' | 'light' | 'hover' = 'primary'
+  ): string {
+    const colors =
+      this.sectionColors[sectionTitle as keyof typeof this.sectionColors];
+    return colors ? colors[colorType] : '#1976d2';
+  }
+
+  getScoreValues(): any[] {
+    if (!this.assessmentData) return [];
+    const scoring = this.assessmentData.assessment_framework.scoring;
+    return Object.keys(scoring).map((key) => scoring[key]);
   }
 
   printAssessment(): void {

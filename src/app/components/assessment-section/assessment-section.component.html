@@ -28,6 +28,9 @@
             <mat-expansion-panel-header>
               <mat-panel-title class="subsection-title">
                 {{ subsection.title }}
+                <span class="question-count"
+                  >({{ getAnsweredQuestionsCount(subsection) }})</span
+                >
               </mat-panel-title>
             </mat-expansion-panel-header>
 

@@ -1,0 +1,86 @@
+// Home component specific styles
+.tab-content {
+  height: 100%;
+  padding: 1rem;
+}
+
+.welcome-card {
+  margin-bottom: 2rem;
+}
+
+.overview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0;
+}
+
+.overview-card {
+  transition: all 0.3s ease;
+  cursor: pointer;
+  border: 2px solid transparent;
+  background: var(--section-light);
+}
+
+.overview-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+  border-color: var(--section-primary);
+  background: var(--section-hover);
+}
+
+.overview-card mat-card-title {
+  color: #000;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.scoring-info {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+}
+
+.scoring-info h3 {
+  color: #000;
+  margin-bottom: 1rem;
+  font-weight: 600;
+}
+
+.scoring-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.scoring-item {
+  padding: 0.75rem;
+  background: white;
+  border-radius: 6px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-left: 4px solid;
+
+  &:nth-child(1) {
+    border-left-color: #f44336; /* Red for Emerging */
+  }
+
+  &:nth-child(2) {
+    border-left-color: #ffc107; /* Yellow for Supported */
+  }
+
+  &:nth-child(3) {
+    border-left-color: #4caf50; /* Green for Independent */
+  }
+}
+
+.scoring-item strong {
+  color: #000;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.scoring-item small {
+  color: #666;
+  font-style: italic;
+}
